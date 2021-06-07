@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/**
+ * In Real life we should protect these routes with authentication
+ */
+Route::resource('products', ProductController::class)
+->only('index', 'show', 'create');
+

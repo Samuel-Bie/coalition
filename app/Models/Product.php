@@ -32,12 +32,7 @@ class Product
     public function update()
     {
 
-        $product = static::find($this->id);
-        if (!$product)
-            throw (new ModelNotFoundException)->setModel(
-                get_class($this),
-                $product
-            );
+        $product = static::findOrFail($this->id);
 
         $this->delete();
         $this->updated_at = now()->toString();
@@ -66,6 +61,18 @@ class Product
         $product = $products->first(function ($value, $key) use ($product) {
             return $product == $value->id;
         });
+        return $product;
+    }
+
+    public static function findOrFail($product)
+    {
+        $product = static::find($product);
+        if (!$product)
+            throw (new ModelNotFoundException)->setModel(
+                static::class,
+                $product
+            );
+        return $product;
     }
 
     public function delete()

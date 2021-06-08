@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Create') }}</div>
 
                 <div class="card-body">
-                    @include('products.comps.form')
+                    @include('products.comps.form-create')
                 </div>
             </div>
         </div>

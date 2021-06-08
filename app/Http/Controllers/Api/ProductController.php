@@ -71,14 +71,18 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, $product)
     {
-        $product = Product::find($product);
-        if (!$product)
-            abort(Response::HTTP_NOT_FOUND, 'Product not found');
+        $originalProduct = Product::findOrFail($product);
+
+
         $product = new Product();
-        $product->id = $product;
+        $product->id = $originalProduct->id;
         $product->name = $request->input("name");
         $product->price = $request->input("price");
         $product->stock = $request->input("stock");
+
+        /* I am not happy with this, but anyway */
+        $product->created_at = $originalProduct->created_at;
+        $product->updated_at = $originalProduct->updated_at;
         $product->save();
         return response()->json(new ProductResource($product), Response::HTTP_ACCEPTED);
     }

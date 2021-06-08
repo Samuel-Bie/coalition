@@ -1,11 +1,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Price</th>
-            <th scope="col">Submited at</th>
+            <th scope="col">@lang('Name')</th>
+            <th scope="col">@lang('Stock')</th>
+            <th scope="col">@lang('Price')</th>
+            <th scope="col">@lang('Submited at')</th>
             <th scope="col">@lang('Total Stock')</th>
+            <th scope="col">@lang('Actions')</th>
         </tr>
     </thead>
 
@@ -22,6 +23,9 @@
             <td class="price">Otto</td>
             <td class="date">@mdo</td>
             <td class="total_value_number">@mdo</td>
+            <td class="">
+                <a href="" class="link">@lang('Edit')</a>
+            </td>
         </tr>
     </tbody>
 </table>
@@ -49,6 +53,7 @@
                         element.find('.price').html(value.price)
                         element.find('.date').html(value.created_at)
                         element.find('.total_value_number').html(value.total_value_number)
+                        element.find('.link').attr('href', value.links.self.web)
                         element.removeClass('d-none example-row')
                         $('.target').append(element)
                     });

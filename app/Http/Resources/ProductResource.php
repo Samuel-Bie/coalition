@@ -16,10 +16,11 @@ class ProductResource extends JsonResource
     {
         return [
             "name" => $this->name,
-            "quantity" => $this->quantity,
+            "quantity" => $this->stock,
             "price" => $this->price,
-            "total_value_number" => $this->price * $this->quantity, // Total in stock
+            "total_value_number" => $this->price * $this->stock, // Total in stock
             "created_at" => $this->created_at, // stands for submitted at
+            "updated_at" => $this->updated_at, // stands for submitted at
         ];
     }
 }

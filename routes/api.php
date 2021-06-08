@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 /**
  * In Real life we should protect these routes with authentication
  */
-Route::resource('products', ProductController::class)
-->only('index', 'show', 'create');
+Route::group(['as' => 'api.'], function () {
 
+    Route::resource('products', ProductController::class);
+
+});

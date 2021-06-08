@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::resource('products', ProductController::class)
-->only('index', 'show', 'create');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['as' => 'web.'], function () {
+    Route::resource('products', ProductController::class)
+        ->only('index', 'show', 'create');
+});

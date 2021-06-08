@@ -7,12 +7,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Http\Resources\ProductResourceCollection;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\ProductResourceCollection;
 
 class ProductController extends Controller
 {
@@ -23,7 +23,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return new ProductResourceCollection(Product::all());
+        $products = Product::all()->sortByDesc(function ($product, $key) {
+            return (new Carbon($product->created_at))->timestamp;
+        });
+
+        // dd($products);
+        return new ProductResourceCollection($products);
     }
 
     /**
@@ -39,7 +44,7 @@ class ProductController extends Controller
         $product->price = $request->input("price");
         $product->stock = $request->input("stock");
         $product->save();
-        return new ProductResource($product);
+        return response()->json(new ProductResource($product), Response::HTTP_CREATED);;
     }
 
     /**

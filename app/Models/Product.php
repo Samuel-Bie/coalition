@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,10 +15,12 @@ class Product
 
     public function save()
     {
-        $product = static::find($this->id);
-        if ($product)
-            return $this->update();
-        $this->id = Str::orderedUuid();
+        if (isset($this->id)) {
+            $product = static::find($this->id);
+            if ($product)
+                return $this->update();
+        }
+        $this->id = (Str::orderedUuid())->toString();
         $this->created_at = now()->toString();
         $this->updated_at = now()->toString();
 
@@ -47,8 +49,14 @@ class Product
 
     public static function all()
     {
-        $file = Storage::get('database/products.json');
-        return collect(json_decode($file));
+        $products = [];
+        try {
+            $file = Storage::get('database/products.json');
+            $products = collect(json_decode($file));
+        } catch (FileNotFoundException $th) {
+            return Storage::put('database/products.json', collect([])->toJson());
+        }
+        return $products;
     }
 
 

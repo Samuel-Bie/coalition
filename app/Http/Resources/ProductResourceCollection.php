@@ -18,8 +18,9 @@ class ProductResourceCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
+            'data' => $this->collection,
             'total_stock' => $this->collection->sum(function($value){
-                return $value->price * $value->quantity;
+                return $value->price * $value->stock;
             }),
         ];
     }
